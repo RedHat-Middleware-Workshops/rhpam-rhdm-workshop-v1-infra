@@ -293,7 +293,7 @@
     tags: rhpam
 
   - name: Import the RHPAM73 ImageStreams into the cluster.
-    shell: "oc create -f https://github.com/jboss-container-images/rhpam-7-openshift-image/blob/7.3.0.GA/rhpam73-image-streams.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.3.0.GA/rhpam73-image-streams.yaml -n openshift"
     when: rhpam_is_exists_result is failed
     ignore_errors: true
     tags: rhpam
