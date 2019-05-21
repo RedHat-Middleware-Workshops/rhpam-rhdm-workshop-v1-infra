@@ -223,10 +223,10 @@
       name: openshift_workshopper
       allow_duplicates: true
     vars:
-      workshopper_name: guides-m2
+      workshopper_name: guides-m1
       project_name: "{{ namespace }}"
-      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}"
-      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module2.yml"
+      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}"
+      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module1.yml"
       workshopper_env_vars:
         PROJECT_SUFFIX: "{{ project_suffix }}"
         #COOLSTORE_PROJECT: coolstore{{ project_suffix }}
@@ -234,7 +234,7 @@
         #ECLIPSE_CHE_URL: http://che-{{ namespace }}.{{ apps_hostname_suffix }}
         #GIT_URL: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}
         NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
-    when: modules is search("m2")
+    when: modules is search("m1")
     tags: guides
 
   #- import_role:
