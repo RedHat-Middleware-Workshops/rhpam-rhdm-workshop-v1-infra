@@ -26,7 +26,6 @@
     infrasvcs_gogs_user_count: 25
     master_url: "kubernetes.default"
     modules: "{{ modules }}"
-    rhpam_is_at
 
   roles:
   - role: ansible.kubernetes-modules
