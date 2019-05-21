@@ -285,18 +285,18 @@
     when: java_imagestream_result is failed
     tags: jdk
 
- # install RHPAM Image Streams
- - name: Check if PAM ImageStreams exists
-   shell: oc get is/rhpam73-businesscentral-openshift -n openshift
-   register: rhpam_is_exists_result
-   ignore_errors: true
-   tags: rhpam
+  # install RHPAM Image Streams
+  - name: Check if PAM ImageStreams exists
+    shell: oc get is/rhpam73-businesscentral-openshift -n openshift
+    register: rhpam_is_exists_result
+    ignore_errors: true
+    tags: rhpam
 
- - name: Import the RHPAM73 ImageStreams into the cluster.
-   shell: "oc create -f https://github.com/jboss-container-images/rhpam-7-openshift-image/blob/7.3.0.GA/rhpam73-image-streams.yaml -n openshift"
-   when: rhpam_is_exists_result is failed
-   ignore_errors: true
-   tags: rhpam
+  - name: Import the RHPAM73 ImageStreams into the cluster.
+    shell: "oc create -f https://github.com/jboss-container-images/rhpam-7-openshift-image/blob/7.3.0.GA/rhpam73-image-streams.yaml -n openshift"
+    when: rhpam_is_exists_result is failed
+    ignore_errors: true
+    tags: rhpam
 
   # update jenkins templates
   #- import_role:
