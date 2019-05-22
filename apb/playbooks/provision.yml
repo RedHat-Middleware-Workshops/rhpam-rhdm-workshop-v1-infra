@@ -328,7 +328,7 @@
     tags: rhpam
 
   - name: Check if RHPAM Authoring Template exists
-    shell: oc get template/rhpam73-authoring -n openshift
+    shell: oc get template/rhpam73-trial-ephemeral -n openshift
     register: rhpam_template_trial_exists_result
     ignore_errors: true
     tags: rhpam
