@@ -339,43 +339,38 @@
     ignore_errors: true
     tags: rhpam
 
-  - name: migrate moduel 2 repos for all users
-    uri:
-      url: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}/api/v1/repos/migrate
-      method: POST
-      body: "{'clone_addr': '{{ gogs_clone_addr_m2 }}', 'uid': {{ item|int + 3 }}, 'repo_name': '{{ gogs_repo_name }}' }"
-      body_format: json
-      username: "user{{ item }}"
-      url_username: "user{{ item }}"
-      password: "{{ gogs_pwd }}"
-      status_code: 200,201
-      force_basic_auth: true
-    ignore_errors: true
-    with_sequence: start=0 end={{ infrasvcs_gogs_user_count }}
-    when: infrasvcs_gogs_user_count > 0 and modules is search("m2")
+#  - name: migrate moduel 2 repos for all users
+#    uri:
+#      url: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}/api/v1/repos/migrate
+#      method: POST
+#      body: "{'clone_addr': '{{ gogs_clone_addr_m2 }}', 'uid': {{ item|int + 3 }}, 'repo_name': '{{ gogs_repo_name }}' }"
+#      body_format: json
+#      username: "user{{ item }}"
+#      url_username: "user{{ item }}"
+#      password: "{{ gogs_pwd }}"
+#      status_code: 200,201
+#      force_basic_auth: true
+#    ignore_errors: true
+#    with_sequence: start=0 end={{ infrasvcs_gogs_user_count }}
+#    when: infrasvcs_gogs_user_count > 0 and modules is search("m2")
 
-
-- import_role:
-    name: openshift_workshopper
-    allow_duplicates: true
-  vars:
-    workshopper_name: guides-m3
-    project_name: "{{ namespace }}"
-    workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}"
-    workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module3.yml"
-    workshopper_env_vars:
-      PROJECT_SUFFIX: "{{ project_suffix }}"
-      #COOLSTORE_PROJECT: coolstore{{ project_suffix }}
-      OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-      #ECLIPSE_CHE_URL: http://che-{{ namespace }}.{{ apps_hostname_suffix }}
-      #GIT_URL: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}
-      NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
-  when: modules is search("m3")
-  tags: guides
-
-
-
-
+#- import_role:
+#    name: openshift_workshopper
+#    allow_duplicates: true
+#  vars:
+#    workshopper_name: guides-m3
+#    project_name: "{{ namespace }}"
+#    workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}"
+#    workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module3.yml"
+#    workshopper_env_vars:
+#      PROJECT_SUFFIX: "{{ project_suffix }}"
+#      #COOLSTORE_PROJECT: coolstore{{ project_suffix }}
+#      OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
+#      #ECLIPSE_CHE_URL: http://che-{{ namespace }}.{{ apps_hostname_suffix }}
+#      #GIT_URL: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}
+#      NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
+#  when: modules is search("m3")
+#  tags: guides
 
   # update jenkins templates
   #- import_role:
