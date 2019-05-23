@@ -6,6 +6,7 @@
     openshift_user:
     openshift_password:
     openshift_token:
+    user_count: 5
 
   roles:
   - role: ansible.kubernetes-modules
@@ -34,7 +35,12 @@
     ignore_errors: true
     with_items:
       - nexus
-      - guides
-#      - rhamt
-#      - che
-#      - gogs
+      - guides-m1
+      - guides-m2
+      - guides-m3
+      - guides-m4
+
+  - name: Delete user projects.
+    command: "oc delete project rhpam-user{{item}}"
+    ignore_errors: true
+    with_sequence: start=1 end={{user_count}}
