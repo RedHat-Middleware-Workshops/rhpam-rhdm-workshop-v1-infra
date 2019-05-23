@@ -1,4 +1,4 @@
-Red Hat Process Automation Manager - Red Hat Decision Manager Workshop Installer v2 [![Build Status](https://travis-ci.org/RedHat-Middleware-Workshops/rhpam-rhdm-workshop-v1-infra.svg?branch=master)](https://travis-ci.org/RedHat-Middleware-Workshops/rhpam-rhdm-workshop-v1-infra)
+Red Hat Process Automation Manager - Red Hat Decision Manager Workshop Installer v1 [![Build Status](https://travis-ci.org/RedHat-Middleware-Workshops/rhpam-rhdm-workshop-v1-infra.svg?branch=master)](https://travis-ci.org/RedHat-Middleware-Workshops/rhpam-rhdm-workshop-v1-infra)
 =========
 
 The provided Ansible Playbook Bundle automates preparing an OpenShift cluster for the Red Hat Process Automation Manager (RHPAM) and Red Hat Decision Manager (RHDM) Labs by deploying required services (lab instructions, Business Central, KIE Server, etc.) which are used during the labs.
@@ -20,16 +20,28 @@ Goto the ansible-service-broker project, and in the configMap add the following 
   ```      
 
 
-If running via your own machine you can run the following command  
+If running via your own machine you can run the following command to create a new workshop infra project:
 
   ```
   oc new-project labs-infra
+  ```
 
+And use the following command to provision the environment:
+
+  ```
   oc run apb --restart=Never --image="quay.io/openshiftlabs/rhpam-rhdm-workshop-v1-apb:ocp-3.11" \
--- provision -vvv -e namespace="labs-infra" -e openshift_token=$(oc whoami -t) -e user_count=50 -e requested_cpu=2 -e requested_memory=4Gi -e modules=m1,m4
+-- provision -vvv -e namespace="labs-infra" -e openshift_token=$(oc whoami -t) -e user_count=5 -e modules=m1,m2,m3,m4
   ```
 
 to follow the logs
+
+    ```
+    oc logs apb -f
+    ```
+
+To deprovision the environment, you can use the following command:
+
   ```
-  oc logs apb -f
+  oc run apb --restart=Never --image="quay.io/openshiftlabs/rhpam-rhdm-workshop-v1-apb:ocp-3.11" \
+-- deprovision -vvv -e namespace="labs-infra" -e openshift_token=$(oc whoami -t) -e user_count=5
   ```
