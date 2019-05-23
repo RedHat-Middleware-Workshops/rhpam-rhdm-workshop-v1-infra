@@ -46,27 +46,27 @@ plans:
       display_type: string
       value: "openshift"
       display_group: Lab Guide
-    - name: infrasvcs_adm_user
-      title: Infra Services Admin User
-      description: Admin user for infrastructure services (Gogs, Che, ...)
+    #- name: infrasvcs_adm_user
+    #  title: Infra Services Admin User
+    #  description: Admin user for infrastructure services (Gogs, Che, ...)
+    #  type: string
+    #  default: "adminuser"
+    #  required: true
+    #  display_type: text
+    #  display_group: Workshop Infra Services
+    #- name: infrasvcs_adm_pwd
+    #  title: Infra Services Admin Password
+    #  description: Admin password for infrastructure services (Gogs, Che, ...)
+    #  type: string
+    #  default: "adminpwd"
+    #  required: true
+    #  display_type: text
+    #  display_group: Workshop Infra Services
+    - name: user_count
+      title: Number of users for the lab
+      description: Set the number of users, this will create user projects with RHPAM environments provisioned.
       type: string
-      default: "adminuser"
-      required: true
-      display_type: text
-      display_group: Workshop Infra Services
-    - name: infrasvcs_adm_pwd
-      title: Infra Services Admin Password
-      description: Admin password for infrastructure services (Gogs, Che, ...)
-      type: string
-      default: "adminpwd"
-      required: true
-      display_type: text
-      display_group: Workshop Infra Services
-    - name: infrasvcs_gogs_user_count
-      title: Number of gogs user for the lab
-      description: Set the number of users, this will create gogs users with git repos
-      type: string
-      default: "25"
+      default: "5"
       required: true
       display_type: text
       display_group: Workshop Infra Services

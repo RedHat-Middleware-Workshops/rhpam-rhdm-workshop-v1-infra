@@ -21,8 +21,8 @@
     #gogs_repo_name: "rhpam-rhdm-workshop-v1-labs"
     #gogs_user_count: 0
     #gogs_user_format: user%d
-    infrasvcs_adm_user: adminuser
-    infrasvcs_adm_pwd: adminpwd
+    #infrasvcs_adm_user: adminuser
+    #infrasvcs_adm_pwd: adminpwd
     user_count: 5
     master_url: "kubernetes.default"
     modules: "{{ modules }}"
