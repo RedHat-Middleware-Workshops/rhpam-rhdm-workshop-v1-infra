@@ -357,11 +357,10 @@
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
 
-- include_tasks: ./rhpam_decision-test-app.yml
-  vars:
-    USER_NUMBER: '{{item}}'
-    OCP_PROJECT: 'rhpam-user{{item}}'
-  with_sequence: start=1 end={{user_count}}
+  - include_tasks: ./rhpam_decision-test-app.yml
+    vars:
+      OCP_PROJECT: 'rhpam-user{{item}}'
+    with_sequence: start=1 end={{user_count}}
 
 
 
