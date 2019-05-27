@@ -339,6 +339,11 @@
     ignore_errors: true
     tags: rhpam
 
+  - name: Import Create React App template
+    shell: "oc create -f https://raw.githubusercontent.com/DuncanDoyle/reactjs-openshift/master/create-react-app-openshift-template.yaml -n openshift"
+    ignore_errors: true
+    tags: rhpam
+
 # Create user projects
   - include_tasks: ./rhpam_project.yml
     vars:
@@ -351,6 +356,13 @@
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
+
+- include_tasks: ./rhpam_decision-test-app.yml
+  vars:
+    USER_NUMBER: '{{item}}'
+    OCP_PROJECT: 'rhpam-user{{item}}'
+  with_sequence: start=1 end={{user_count}}
+
 
 
 #  - name: migrate moduel 2 repos for all users

@@ -1,0 +1,12 @@
+---
+
+- name: "Get KIE Server Route"
+  shell: "oc get route rhpam7-kieserver -n {{OCP_PROJECT}} | awk 'FNR > 1 {print $2}'"
+  register: oc_get_route_output
+
+- name: "Set KIE-Server Route fact"
+  set_fact:
+    kie_server_route: "{{ oc_get_route_output.stdout }}"
+
+- name: Create ReactJS Decision Client App
+  shell: "oc new-app -e KIE_SERVER_URL=http://{{kie_server_route}} -e KIE_SERVER_USER=pamAdmin -e KIE_SERVER_PWD=redhatpam1! --template react-web-app -p SOURCE_REPOSITORY_URL=https://github.com/DuncanDoyle/rhpam7-workshop-reactjs-rules-client -n {{OCP_PROJECT}}"
