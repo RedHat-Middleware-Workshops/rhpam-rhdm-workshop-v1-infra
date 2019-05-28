@@ -352,7 +352,8 @@
 #      OCP_PROJECT: 'rhpam-user{{item}}'
 #    with_sequence: start=1 end={{user_count}}
 
-  - import_role: rhpam_project
+  - import_role:
+      name: rhpam_project
     vars:
       USER_NUMBER: '{{item}}'
       OCP_PROJECT: 'rhpam-user{{item}}'
