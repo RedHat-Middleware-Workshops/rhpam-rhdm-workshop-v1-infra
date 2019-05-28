@@ -346,7 +346,7 @@
 
 # Create user projects
   - include_role:
-      name: rhpam-project
+      name: rhpam_project
     vars:
       USER_NUMBER: '{{item}}'
       OCP_PROJECT: 'rhpam-user{{item}}'
@@ -360,6 +360,12 @@
 
   - include_role:
       name: ansible_openshift_rhpam
+    vars:
+      OCP_PROJECT: 'rhpam-user{{item}}'
+    with_sequence: start=1 end={{user_count}}
+
+  - include_role:
+      name: rhpam_bc_cm_showcase
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
