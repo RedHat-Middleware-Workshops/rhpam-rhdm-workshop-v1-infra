@@ -345,7 +345,14 @@
     tags: rhpam
 
 # Create user projects
-  - include_tasks: ./rhpam_project.yml
+
+#  - include_tasks: ./rhpam_project.yml
+#    vars:
+#      USER_NUMBER: '{{item}}'
+#      OCP_PROJECT: 'rhpam-user{{item}}'
+#    with_sequence: start=1 end={{user_count}}
+
+  - import_role: rhpam_project
     vars:
       USER_NUMBER: '{{item}}'
       OCP_PROJECT: 'rhpam-user{{item}}'

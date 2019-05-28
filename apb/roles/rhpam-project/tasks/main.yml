@@ -1,0 +1,19 @@
+---
+
+- name: Check if project exists
+  shell: "oc get project {{OCP_PROJECT}}"
+  register: rhpam_result
+  ignore_errors: true
+  changed_when: false
+
+- name: Create projects
+  shell: "oc new-project {{OCP_PROJECT}} --display-name=\"RHPAM 7.3 - User {{USER_NUMBER}}\" --description=\"RHPAM 7.3 for user {{USER_NUMBER}}.\""
+  when: rhpam_result is failed
+
+- name: Annotate project namespace
+  shell: "oc annotate namespace {{OCP_PROJECT}} openshift.io/requester=user{{USER_NUMBER}} --overwrite"
+  when: rhpam_result is failed
+
+- name: Make user admin
+  shell: "oc policy add-role-to-user admin user{{USER_NUMBER}} -n {{OCP_PROJECT}}"
+  when: rhpam_result is failed
