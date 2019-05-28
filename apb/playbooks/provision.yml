@@ -345,12 +345,18 @@
     tags: rhpam
 
 # Create user projects
-
-  - include_tasks: ./rhpam_project.yml
+  - include_role:
+      name: rhpam-project
     vars:
       USER_NUMBER: '{{item}}'
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
+
+#  - include_tasks: ./rhpam_project.yml
+#    vars:
+#      USER_NUMBER: '{{item}}'
+#      OCP_PROJECT: 'rhpam-user{{item}}'
+#    with_sequence: start=1 end={{user_count}}
 
   - include_role:
       name: ansible_openshift_rhpam
