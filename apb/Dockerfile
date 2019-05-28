@@ -52,6 +52,7 @@ cnZpY2VzCgogICAgICAK"
 
 
 COPY playbooks /opt/apb/actions
+COPY roles /opt/ansible/roles
 ADD requirements.yml /opt/apb/actions/requirements.yml
 RUN yum install python-pip -y \
   && pip install jmespath \
