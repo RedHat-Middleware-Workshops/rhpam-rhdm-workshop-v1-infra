@@ -352,13 +352,14 @@
 #      OCP_PROJECT: 'rhpam-user{{item}}'
 #    with_sequence: start=1 end={{user_count}}
 
-  - import_role:
-      name: rhpam-project
+  roles:
+  - role: rhpam-project
     vars:
       USER_NUMBER: '{{item}}'
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
 
+  tasks:
   - import_role:
       name: ansible_openshift_rhpam
     vars:
@@ -369,8 +370,6 @@
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
-
-
 
 #  - name: migrate moduel 2 repos for all users
 #    uri:
