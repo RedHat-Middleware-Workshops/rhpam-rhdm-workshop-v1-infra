@@ -11,4 +11,4 @@
   shell: "oc patch dc/rhpam7-rhpamcentr --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/namespace\", \"value\": \"{{OCP_PROJECT}}\"}]' -n {{ OCP_PROJECT }}"
 
 - name: "Configure Business Central environment variables."
-  shell: "oc set env dc/rhpam7-rhpamcentr JAVA_OPTS_APPEND=\"-Dorg.jbpm.casemgmt.showcase.url=/rhpam-case-mgmt-showcase -Dorg.kie.server.location=http://rhpam7-kieserver:8080/services/rest/server\" -n {{ OCP_PROJECT }}"
+  shell: "oc set env dc/rhpam7-rhpamcentr JAVA_OPTS_APPEND=\"-Dorg.jbpm.casemgmt.showcase.url=/rhpam-case-mgmt-showcase -Dorg.kie.server.location=http://rhpam7-kieserver:8080/services/rest/server\ -Dorg.jbpm.wb.forms.renderer.ext=true" -n {{ OCP_PROJECT }}"
