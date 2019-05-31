@@ -1,10 +1,13 @@
 ---
 
 - name: Create PostgreSQL database
-  shell: "oc new-app --template=postgresql-ephemeral -p NAMESPACE=openshift -p POSTGRESQL_DATABASE="postgres" -p POSTGRESQL_USER=postgres -p POSTGRESQL_PASSWORD=postgres -n {{OCP_PROJECT}}"
+  shell: "oc new-app --template=postgresql-ephemeral -p NAMESPACE=openshift -p POSTGRESQL_DATABASE=postgres -p POSTGRESQL_USER=postgres -p POSTGRESQL_PASSWORD=postgres -n {{OCP_PROJECT}}"
 
 - name: Create ConfigMap
   shell: "oc create configmap postgresql-config-map --from-file={{ role_path }}/files/provision_data.sh --from-file={{ role_path }}/files/wait_for_postgres.sh --from-file={{ role_path }}/files/provision_test_data.sql -n {{OCP_PROJECT}}"
 
 - name: Attach ConfigMap
-  shell: oc volume dc/postgresql --name=postgresql-config-volume --add -m /tmp/config-files -t configmap --configmap-name=postgresql-config-map -n {{OCP_PROJECT}}
+  shell: "oc set volume dc/postgresql --name=postgresql-config-volume --add -m /tmp/config-files -t configmap --configmap-name=postgresql-config-map -n {{OCP_PROJECT}}"
+
+- name: Set Deployment Hooks
+  shell: "oc set deployment-hook dc/postgresql --post -c postgresql -e POSTGRESQL_HOSTNAME=postgresql -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD=postgres --volumes=postgresql-config-volume --failure-policy=abort -- /bin/bash /tmp/config-files/wait_for_postgres.sh /tmp/config-files/provision_data.sh -n {{OCP_PROJECT}}"
