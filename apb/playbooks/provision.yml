@@ -344,6 +344,13 @@
     ignore_errors: true
     tags: rhpam
 
+
+# Create database for reporting module
+  - include_role:
+      name: rhpam_reporting_database
+    vars:
+      OCP_PROJECT: '{{namespace}}'
+
 # Create user projects
   - include_role:
       name: rhpam_project
