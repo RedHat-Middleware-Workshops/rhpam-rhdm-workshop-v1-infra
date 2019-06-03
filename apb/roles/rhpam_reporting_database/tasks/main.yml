@@ -1,7 +1,7 @@
 ---
 
 - name: Check if the PostgreSQL database exists
-  shell: "oc get dc/postgresql-ephemeral -n {{OCP_PROJECT}}"
+  shell: "oc get dc/postgresql -n {{OCP_PROJECT}}"
   register: postgresql_result
   ignore_errors: true
   changed_when: false
