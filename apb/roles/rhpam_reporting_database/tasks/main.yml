@@ -4,7 +4,7 @@
   shell: "oc get dc/postgresql-ephemeral -n {{OCP_PROJECT}}"
   register: postgresql_result
   ignore_errors: true
-  changed_when: falseshell:
+  changed_when: false
 
 - name: Create PostgreSQL database
   shell: "oc new-app --template=postgresql-ephemeral -p NAMESPACE=openshift -p POSTGRESQL_DATABASE=postgres -p POSTGRESQL_USER=postgres -p POSTGRESQL_PASSWORD=postgres -n {{OCP_PROJECT}}"
@@ -14,7 +14,7 @@
   shell: "oc get cm/postgresql-config-map -n {{OCP_PROJECT}}"
   register: postgresql_cm_result
   ignore_errors: true
-  changed_when: falseshell:
+  changed_when: false
 
 - name: Create ConfigMap
   shell: "oc create configmap postgresql-config-map --from-file={{ role_path }}/files/provision_data.sh --from-file={{ role_path }}/files/wait_for_postgres.sh --from-file={{ role_path }}/files/provision_test_data.sql -n {{OCP_PROJECT}}"
