@@ -1,7 +1,7 @@
 ---
 
 - name: Check if ImageStream exists
-  shell: "oc get is/rhpam73-businesscentral-openshift-cm-showcase {{OCP_PROJECT}}"
+  shell: "oc get is/rhpam73-businesscentral-openshift-cm-showcase -n {{OCP_PROJECT}}"
   register: is_result
   ignore_errors: true
   changed_when: false
