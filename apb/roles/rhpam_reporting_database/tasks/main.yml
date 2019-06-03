@@ -6,6 +6,9 @@
 - name: Create ConfigMap
   shell: "oc create configmap postgresql-config-map --from-file={{ role_path }}/files/provision_data.sh --from-file={{ role_path }}/files/wait_for_postgres.sh --from-file={{ role_path }}/files/provision_test_data.sql -n {{OCP_PROJECT}}"
 
+- name: Set label on ConfigMap
+  shell: "oc label cm postgresql-config-map app=postgresql-ephemeral -n {{OCP_PROJECT}}"
+
 - name: Attach ConfigMap
   shell: "oc set volume dc/postgresql --name=postgresql-config-volume --add -m /tmp/config-files -t configmap --configmap-name=postgresql-config-map -n {{OCP_PROJECT}}"
 

@@ -35,8 +35,7 @@
     ignore_errors: true
     with_items:
       - nexus
-      - postgresql
-      - postgresql-config-map
+      - postgresql-ephemeral
       - guides-m1
       - guides-m2
       - guides-m3
