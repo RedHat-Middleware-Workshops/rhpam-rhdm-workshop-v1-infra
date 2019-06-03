@@ -26,6 +26,8 @@
 
 - name: Attach ConfigMap
   shell: "oc set volume dc/postgresql --name=postgresql-config-volume --add -m /tmp/config-files -t configmap --configmap-name=postgresql-config-map -n {{OCP_PROJECT}}"
+  when: postgresql_cm_result is failed
 
 - name: Set Deployment Hooks
   shell: "oc set deployment-hook dc/postgresql --post -c postgresql -e POSTGRESQL_HOSTNAME=postgresql -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD=postgres --volumes=postgresql-config-volume --failure-policy=abort -- /bin/bash /tmp/config-files/wait_for_postgres.sh /tmp/config-files/provision_data.sh -n {{OCP_PROJECT}}"
+  when: postgresql_cm_result is failed
