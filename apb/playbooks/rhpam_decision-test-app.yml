@@ -1,12 +1,21 @@
 ---
 
+- name: Check if ReactJS Decision Client App exists
+  shell: "oc get dc/react-web-app -n {{OCP_PROJECT}}"
+  register: reactjs_result
+  ignore_errors: true
+  changed_when: false
+
 - name: "Get KIE Server Route"
   shell: "oc get route rhpam7-kieserver -n {{OCP_PROJECT}} | awk 'FNR > 1 {print $2}'"
   register: oc_get_route_output
+  when: reactjs_result is failed
 
 - name: "Set KIE-Server Route fact"
   set_fact:
     kie_server_route: "{{ oc_get_route_output.stdout }}"
+  when: reactjs_result is failed
 
 - name: Create ReactJS Decision Client App
   shell: "oc new-app -e KIE_SERVER_URL=http://{{kie_server_route}} -e KIE_SERVER_USER=pamAdmin -e KIE_SERVER_PWD=redhatpam1! --template react-web-app -p SOURCE_REPOSITORY_URL=https://github.com/DuncanDoyle/rhpam7-workshop-reactjs-rules-client -n {{OCP_PROJECT}}"
+  when: reactjs_result is failed
