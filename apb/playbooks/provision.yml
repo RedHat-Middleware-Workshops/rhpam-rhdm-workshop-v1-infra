@@ -377,6 +377,12 @@
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
 
+  - include_role:
+      name: rhpam_ks_cors
+    vars:
+      OCP_PROJECT: 'rhpam-user{{item}}'
+    with_sequence: start=1 end={{user_count}}
+
   - include_tasks: ./rhpam_decision-test-app.yml
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
