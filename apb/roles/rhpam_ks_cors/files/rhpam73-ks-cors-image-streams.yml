@@ -1,23 +1,23 @@
 kind: ImageStreamList
 apiVersion: v1
 metadata:
-  name: rhpam73-bc-cm-image-streams
+  name: rhpam73-ks-cors-image-streams
   annotations:
-    description: ImageStream definitions for Red Hat Process Automation Manager 7.3 with Case Management Showcase
+    description: ImageStream definitions for Red Hat Process Automation Manager 7.3 KIE-Server with CORS
     openshift.io/provider-display-name: Red Hat, Inc.
 items:
 - kind: ImageStream
   apiVersion: v1
   metadata:
-    name: rhpam73-businesscentral-openshift-cm-showcase
+    name: rhpam73-kieserver-openshift-cors
     annotations:
-      openshift.io/display-name: Red Hat Process Automation Manager Business Central 7.3 with Case Management Showcase
+      openshift.io/display-name: Red Hat Process Automation Manager KIE-Server 7.3 with CORS
       openshift.io/provider-display-name: Red Hat, Inc.
   spec:
     tags:
     - name: '1.0'
       annotations:
-        description: Red Hat Process Automation Manager 7.3 - Business Central with Case Management Showcase image.
+        description: Red Hat Process Automation Manager 7.3 - KIE-Server with CORS image.
         iconClass: icon-jboss
         tags: rhpam
         supports: rhpam:7.3
@@ -26,4 +26,4 @@ items:
         type: Local
       from:
         kind: DockerImage
-        name: quay.io/rhpam_rhdm/rhpam73-businesscentral-openshift-cm-showcase:1.0
+        name: quay.io/rhpam_rhdm/rhpam73-kieserver-openshift-cors:1.0
