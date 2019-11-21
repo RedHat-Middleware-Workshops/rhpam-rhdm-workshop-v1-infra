@@ -81,8 +81,7 @@
                 name: dummy
                 weight: 100
               port:
-                targetPort: dummy-port
-                wildcardPolicy: None
+                targetPort: dummy-port        
         register: dummy_route
       - name: Set App Hostname suffix
         set_fact:
