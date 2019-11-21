@@ -1,7 +1,7 @@
 ---
 
 - name: Check if ImageStream exists
-  shell: "oc get is/rhpam75-businesscentral-openshift-cm-showcase -n {{OCP_PROJECT}}"
+  shell: "oc get is/rhpam-businesscentral-rhel8-cm-showcase -n {{OCP_PROJECT}}"
   register: is_result
   ignore_errors: true
   changed_when: false
@@ -11,7 +11,7 @@
   when: is_result is failed
 
 - name: "Configure Business Central ImageStream"
-  shell: "oc patch dc/rhpam7-rhpamcentr --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam75-businesscentral-openshift-cm-showcase:1.0\"}]' -n {{ OCP_PROJECT }}"
+  shell: "oc patch dc/rhpam7-rhpamcentr --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam-businesscentral-rhel8-cm-showcase:7.5.0\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
 - name: "Configure Business Central ImageStream Namespace"

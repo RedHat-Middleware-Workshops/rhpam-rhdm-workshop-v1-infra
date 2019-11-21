@@ -369,6 +369,8 @@
       name: ansible_openshift_rhpam
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
+      RHPAM_VERSION_TAG: 7.5.x
+      RHPAM_VERSION_ID: 75
     with_sequence: start=1 end={{user_count}}
 
   - include_role:
