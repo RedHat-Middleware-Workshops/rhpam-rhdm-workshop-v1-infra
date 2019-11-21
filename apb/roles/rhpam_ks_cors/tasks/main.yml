@@ -1,17 +1,17 @@
 ---
 
 - name: Check if ImageStream exists
-  shell: "oc get is/rhpam73-kieserver-openshift-cors -n {{OCP_PROJECT}}"
+  shell: "oc get is/rhpam75-kieserver-openshift-cors -n {{OCP_PROJECT}}"
   register: is_result
   ignore_errors: true
   changed_when: false
 
 - name: Create ImageStream
-  shell: "oc create -f {{ role_path }}/files/rhpam73-ks-cors-image-streams.yml -n {{ OCP_PROJECT }}"
+  shell: "oc create -f {{ role_path }}/files/rhpam75-ks-cors-image-streams.yml -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
 - name: "Configure KIE-Server ImageStream"
-  shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam73-kieserver-openshift-cors:1.0\"}]' -n {{ OCP_PROJECT }}"
+  shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam75-kieserver-openshift-cors:1.0\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
 - name: "Configure KIE-Server ImageStream Namespace"
