@@ -66,6 +66,9 @@
                   protocol: TCP
                   port: 8080
                   targetPort: 8080
+      - name: Wait for Service to be created
+        pause:
+          seconds: 10
       - name: Create an OpenShift Route
         openshift_raw:
           state: present
@@ -81,7 +84,7 @@
                 name: dummy
                 weight: 100
               port:
-                targetPort: dummy-port        
+                targetPort: dummy-port
         register: dummy_route
       - name: Set App Hostname suffix
         set_fact:
