@@ -104,27 +104,14 @@
     ignore_errors: true
     tags: always
 
-  #- name: delete coolstore-monolith-binary-build template
-  #  shell: "oc delete template coolstore-monolith-binary-build -n openshift"
-  #  register: workshopper_project_result
-  #  ignore_errors: true
-  #  tags: always
-
-  #- name: create a coolstore-monolith-binary-build template
-  #  shell: "oc create -f https://raw.githubusercontent.com/RedHat-Middleware-Workshops/cloud-native-workshop-v2m1-labs/master/monolith/src/main/openshift/template-binary.json -n openshift"
-  #  when:
-  #    - openshift_token is defined
-  #    - openshift_token is not none
-  #    - openshift_token|trim() != ""
-  #  tags: always
-
-  - name: disable namespace ownership for router
-    shell: "oc set env dc/router --overwrite ROUTER_DISABLE_NAMESPACE_OWNERSHIP_CHECK=true -n default"
-    when:
-      - openshift_token is defined
-      - openshift_token is not none
-      - openshift_token|trim() != ""
-    tags: always
+# This does not seem to work on OCP 4.2. Also not sure if its actually needed ...
+#  - name: disable namespace ownership for router
+#    shell: "oc set env dc/router --overwrite ROUTER_DISABLE_NAMESPACE_OWNERSHIP_CHECK=true -n default"
+#    when:
+#      - openshift_token is defined
+#      - openshift_token is not none
+#      - openshift_token|trim() != ""
+#    tags: always
 
 #  - import_role:
 #      name: openshift_sonatype_nexus
