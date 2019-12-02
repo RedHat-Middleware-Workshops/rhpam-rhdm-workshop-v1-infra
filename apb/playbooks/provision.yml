@@ -70,25 +70,16 @@
         pause:
           seconds: 10
       - name: Create an OpenShift Route
-        openshift_raw:
-          state: present
-          definition:
-            apiVersion: v1
-            kind: Route
-            metadata:
-              name: dummy
-              namespace: labs-infra
-            spec:
-              to:
-                kind: Service
-                name: dummy
-                weight: 100
-              port:
-                targetPort: dummy-port
-        register: dummy_route
+        shell: oc expose service dummy -n labs-infra
+      - name: Get OpenShif Route url
+        shell: "oc get route dummy | awk 'FNR > 1 {print $2}'"
+        register: oc_get_route_output
       - name: Set App Hostname suffix
         set_fact:
-          apps_hostname_suffix: "{{ dummy_route.result.spec.host|regex_replace('^dummy-' + namespace + '\\.(.*)$', '\\1') }}"
+          apps_hostname_suffix: "{{ oc_get_route_output.stdout|regex_replace('^dummy-' + namespace + '\\.(.*)$', '\\1') }}"
+      - name: Debug apps hostname suffix
+        debug:
+          msg: App hostname suffix: {{ apps_hostname_suffix }}
       - name: Delete an OpenShift Service
         openshift_raw:
           state: absent
@@ -98,7 +89,7 @@
             metadata:
               name: dummy
               namespace: labs-infra
-      - name: Delete an OpenShift Service
+      - name: Delete an OpenShift Route
         openshift_raw:
           state: absent
           definition:
