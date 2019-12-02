@@ -79,7 +79,7 @@
           apps_hostname_suffix: "{{ oc_get_route_output.stdout|regex_replace('^dummy-' + namespace + '\\.(.*)$', '\\1') }}"
       - name: Debug apps hostname suffix
         debug:
-          msg: App hostname suffix: {{ apps_hostname_suffix }}
+          msg: "App hostname suffix: {{ apps_hostname_suffix }}"
       - name: Delete an OpenShift Service
         openshift_raw:
           state: absent
