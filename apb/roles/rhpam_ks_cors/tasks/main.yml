@@ -1,5 +1,5 @@
 ---
-  
+
 - name: Cancel running rollout
   shell: "oc rollout cancel dc/rhpam7-rhpamcentr"
 
@@ -20,3 +20,6 @@
 - name: "Configure KIE-Server ImageStream Namespace"
   shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/namespace\", \"value\": \"{{OCP_PROJECT}}\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
+
+- name: Trigger BC rollout
+  shell: "oc rollout latest dc/rhpam7-rhpamcentr"
