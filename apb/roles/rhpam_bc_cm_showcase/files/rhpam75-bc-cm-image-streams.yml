@@ -26,4 +26,4 @@ items:
         type: Local
       from:
         kind: DockerImage
-        name: quay.io/rhpam_rhdm/rhpam_rhdm /rhpam-businesscentral-rhel8-cm-showcase:7.5.0
+        name: quay.io/rhpam_rhdm/rhpam-businesscentral-rhel8-cm-showcase:7.5.0
