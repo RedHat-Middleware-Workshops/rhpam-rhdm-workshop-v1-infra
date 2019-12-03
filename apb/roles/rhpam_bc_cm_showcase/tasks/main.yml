@@ -1,7 +1,7 @@
 ---
 
-- name: Cancel running rollout
-  shell: "oc rollout cancel dc/rhpam7-kieserver"
+#- name: Cancel running rollout
+#  shell: "oc rollout cancel dc/rhpam7-kieserver"
 
 - name: Check if ImageStream exists
   shell: "oc get is/rhpam-businesscentral-rhel8-cm-showcase -n {{OCP_PROJECT}}"
@@ -25,5 +25,5 @@
   shell: "oc set env dc/rhpam7-rhpamcentr JAVA_OPTS_APPEND=\"-Dorg.jbpm.casemgmt.showcase.url=/rhpam-case-mgmt-showcase -Dorg.kie.server.location=http://rhpam7-kieserver:8080/services/rest/server -Dorg.jbpm.wb.forms.renderer.ext=true\" -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
-- name: Trigger KIE-Server rollout
-  shell: "oc rollout latest dc/rhpam7-kieserver"
+#- name: Trigger KIE-Server rollout
+#  shell: "oc rollout latest dc/rhpam7-kieserver"

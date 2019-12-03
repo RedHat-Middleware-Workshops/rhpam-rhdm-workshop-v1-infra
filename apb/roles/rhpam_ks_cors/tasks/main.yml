@@ -1,7 +1,7 @@
 ---
 
-- name: Cancel running rollout
-  shell: "oc rollout cancel dc/rhpam7-rhpamcentr"
+#- name: Cancel running rollout
+#  shell: "oc rollout cancel dc/rhpam7-rhpamcentr"
 
 - name: Check if ImageStream exists
   shell: "oc get is/rhpam-kieserver-rhel8-cors -n {{OCP_PROJECT}}"
@@ -21,5 +21,5 @@
   shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/namespace\", \"value\": \"{{OCP_PROJECT}}\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
-- name: Trigger BC rollout
-  shell: "oc rollout latest dc/rhpam7-rhpamcentr"
+#- name: Trigger BC rollout
+#  shell: "oc rollout latest dc/rhpam7-rhpamcentr"
