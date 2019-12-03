@@ -1,5 +1,8 @@
 ---
 
+- name: Cancel running rollout
+  shell: "oc rollout cancel dc/rhpam7-kieserver"
+
 - name: Check if ImageStream exists
   shell: "oc get is/rhpam-businesscentral-rhel8-cm-showcase -n {{OCP_PROJECT}}"
   register: is_result
