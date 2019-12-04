@@ -23,7 +23,7 @@
   when: is_result is failed
 
 - name: Configure Liveness probe
-  shell: "oc set probe dc/rhpam7-rhpamcentr --liveness --initial-delay-seconds=240"
+  shell: "oc set probe dc/rhpam7-rhpamcentr --liveness --initial-delay-seconds=240 -n {{ OCP_PROJECT }}"
 
 - name: Configure Readiness probe
-  shell: "oc set probe dc/rhpam7-rhpamcentr --readiness --initial-delay-seconds=60"
+  shell: "oc set probe dc/rhpam7-rhpamcentr --readiness --initial-delay-seconds=60 -n {{ OCP_PROJECT }}"
