@@ -1,0 +1,19 @@
+---
+
+- name: Configure Liveness probe
+  shell: "oc set probe dc/rhpam7-rhpamcentr --liveness --initial-delay-seconds=360 -n {{ OCP_PROJECT }}"
+
+- name: Configure Readiness probe
+  shell: "oc set probe dc/rhpam7-rhpamcentr --readiness --initial-delay-seconds=90 -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_ADMIN Password
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_ADMIN_PWD=redhatpam1! -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_SERVER_CONTROLLER Password
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_SERVER_CONTROLLER_PWD=test1234! -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_SERVER Password
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_SERVER_PWD=test1234! -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_MAVEN_PWD Password
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_MAVEN_PWD=test1234! -n {{ OCP_PROJECT }}"
