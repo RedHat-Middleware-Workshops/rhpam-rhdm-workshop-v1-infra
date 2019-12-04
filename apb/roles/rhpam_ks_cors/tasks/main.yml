@@ -1,7 +1,5 @@
 ---
 
-#- name: Cancel running rollout
-#  shell: "oc rollout cancel dc/rhpam7-rhpamcentr"
 
 - name: Check if ImageStream exists
   shell: "oc get is/rhpam-kieserver-rhel8-cors -n {{OCP_PROJECT}}"
@@ -21,5 +19,14 @@
   shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/namespace\", \"value\": \"{{OCP_PROJECT}}\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
-#- name: Trigger BC rollout
-#  shell: "oc rollout latest dc/rhpam7-rhpamcentr"
+- name: Set KIE_ADMIN Password:
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_ADMIN_PWD=redhatpam1! -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_SERVER_CONTROLLER Password:
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_SERVER_CONTROLLER_PWD=test1234! -n {{ OCP_PROJECT }}"
+
+- name: Set KIE_SERVER Password:
+  shell: "oc set env dc/rhpam7-rhpamcentr KIE_SERVER_PWD=test1234! -n {{ OCP_PROJECT }}"
+
+- name: Set RHPAMCENTR_MAVEN_REPO_PASSWORD Password:
+  shell: "oc set env dc/rhpam7-rhpamcentr RHPAMCENTR_MAVEN_REPO_PASSWORD=test1234! -n {{ OCP_PROJECT }}"
