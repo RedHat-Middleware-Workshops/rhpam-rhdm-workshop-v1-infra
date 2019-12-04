@@ -409,3 +409,9 @@
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
+
+#Explicitly rollout BC
+  - include_tasks: ./rhpam_bc_rollout.yml
+    vars:
+      OCP_PROJECT: 'rhpam-user{{item}}'
+    with_sequence: start=1 end={{user_count}}

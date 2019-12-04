@@ -1,0 +1,5 @@
+---
+
+- name: Rollout Business Central
+  shell: "oc rollout latest rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
+  ignore_errors: true
