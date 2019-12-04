@@ -1,5 +1,13 @@
 ---
 
+- name: Cancel runnig BC Rollout
+  shell: "oc rollout cancel dc/rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
+  ignore_errors: true
+
+- name: Wait for the rollout to be fully cancelled
+  shell: "oc rollout status dc/rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
+  ignore_errors: true
+
 - name: Rollout Business Central
-  shell: "oc rollout latest rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
+  shell: "oc rollout latest dc/rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
   ignore_errors: true
