@@ -1,4 +1,4 @@
-- name: rhpam-rhdm-workshopv1-apb playbook to provision the application
+- name: rhpam-rhdm-workshopv2-apb playbook to provision the application
   hosts: localhost
   gather_facts: false
   connection: local
@@ -49,50 +49,69 @@
       openshift_token|trim() == ""
     tags: always
 
-  - name: extract app route suffix
+  - name: Extract the app route suffix
     block:
-      - openshift_v1_route:
-          name: dummy
-          namespace: "{{ namespace }}"
+      - name: Create an OpenShift Service
+        openshift_raw:
           state: present
-          spec_to_kind: Service
-          spec_to_name: dummy
-          spec_port_target_port: 8080
-        register: dummy_route
-      - set_fact:
-          apps_hostname_suffix: "{{ dummy_route.route.spec.host|regex_replace('^dummy-' + namespace + '\\.(.*)$', '\\1') }}"
-      - openshift_v1_route:
-          name: dummy
-          namespace: "{{ namespace }}"
+          definition:
+            apiVersion: v1
+            kind: Service
+            metadata:
+              name: dummy
+              namespace: labs-infra
+            spec:
+              ports:
+                - name: dummy-port
+                  protocol: TCP
+                  port: 8080
+                  targetPort: 8080
+      - name: Wait for Service to be created
+        pause:
+          seconds: 10
+      - name: Create an OpenShift Route
+        shell: oc expose service dummy -n labs-infra
+      - name: Get OpenShif Route url
+        shell: "oc get route dummy | awk 'FNR > 1 {print $2}'"
+        register: oc_get_route_output
+      - name: Set App Hostname suffix
+        set_fact:
+          apps_hostname_suffix: "{{ oc_get_route_output.stdout|regex_replace('^dummy-' + namespace + '\\.(.*)$', '\\1') }}"
+      - name: Debug apps hostname suffix
+        debug:
+          msg: "App hostname suffix: {{ apps_hostname_suffix }}"
+      - name: Delete an OpenShift Service
+        openshift_raw:
           state: absent
-    tags: always
+          definition:
+            apiVersion: v1
+            kind: Service
+            metadata:
+              name: dummy
+              namespace: labs-infra
+      - name: Delete an OpenShift Route
+        openshift_raw:
+          state: absent
+          definition:
+            apiVersion: v1
+            kind: Route
+            metadata:
+              name: dummy
+              namespace: labs-infra
 
   - name: delete project quota
     shell: "oc delete limitrange --all -n {{ namespace }}"
     ignore_errors: true
     tags: always
 
-  #- name: delete coolstore-monolith-binary-build template
-  #  shell: "oc delete template coolstore-monolith-binary-build -n openshift"
-  #  register: workshopper_project_result
-  #  ignore_errors: true
-  #  tags: always
-
-  #- name: create a coolstore-monolith-binary-build template
-  #  shell: "oc create -f https://raw.githubusercontent.com/RedHat-Middleware-Workshops/cloud-native-workshop-v2m1-labs/master/monolith/src/main/openshift/template-binary.json -n openshift"
-  #  when:
-  #    - openshift_token is defined
-  #    - openshift_token is not none
-  #    - openshift_token|trim() != ""
-  #  tags: always
-
-  - name: disable namespace ownership for router
-    shell: "oc set env dc/router --overwrite ROUTER_DISABLE_NAMESPACE_OWNERSHIP_CHECK=true -n default"
-    when:
-      - openshift_token is defined
-      - openshift_token is not none
-      - openshift_token|trim() != ""
-    tags: always
+# This does not seem to work on OCP 4.2. Also not sure if its actually needed ...
+#  - name: disable namespace ownership for router
+#    shell: "oc set env dc/router --overwrite ROUTER_DISABLE_NAMESPACE_OWNERSHIP_CHECK=true -n default"
+#    when:
+#      - openshift_token is defined
+#      - openshift_token is not none
+#      - openshift_token|trim() != ""
+#    tags: always
 
 #  - import_role:
 #      name: openshift_sonatype_nexus
@@ -304,37 +323,37 @@
 
   # install RHPAM Image Streams
   - name: Check if PAM ImageStreams exists
-    shell: oc get is/rhpam73-businesscentral-openshift -n openshift
+    shell: oc get is/rhpam-businesscentral-rhel8 -n openshift
     register: rhpam_is_exists_result
     ignore_errors: true
     tags: rhpam
 
   - name: Import the RHPAM ImageStreams into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.3.0.GA/rhpam73-image-streams.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.5.0.GA/rhpam75-image-streams.yaml  -n openshift"
     when: rhpam_is_exists_result is failed
     ignore_errors: true
     tags: rhpam
 
   - name: Check if RHPAM Authoring Template exists
-    shell: oc get template/rhpam73-authoring -n openshift
+    shell: oc get template/rhpam75-authoring -n openshift
     register: rhpam_template_authoring_exists_result
     ignore_errors: true
     tags: rhpam
 
   - name: Import the RHPAM Authoring Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.3.0.GA/templates/rhpam73-authoring.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.5.0.GA/templates/rhpam75-authoring.yaml -n openshift"
     when: rhpam_template_authoring_exists_result is failed
     ignore_errors: true
     tags: rhpam
 
-  - name: Check if RHPAM Authoring Template exists
-    shell: oc get template/rhpam73-trial-ephemeral -n openshift
+  - name: Check if RHPAM Trial Template exists
+    shell: oc get template/rhpam75-trial-ephemeral -n openshift
     register: rhpam_template_trial_exists_result
     ignore_errors: true
     tags: rhpam
 
   - name: Import the RHPAM Trial Ephemeral Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.3.0.GA/templates/rhpam73-trial-ephemeral.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.5.0.GA/templates/rhpam75-trial-ephemeral.yaml -n openshift"
     when: rhpam_template_trial_exists_result is failed
     ignore_errors: true
     tags: rhpam
@@ -369,6 +388,14 @@
       name: ansible_openshift_rhpam
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
+      RHPAM_VERSION_TAG: 7.5.x
+      RHPAM_VERSION_ID: 75
+    with_sequence: start=1 end={{user_count}}
+
+  - include_role:
+      name: rhpam_bc
+    vars:
+      OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
 
   - include_role:
@@ -378,297 +405,19 @@
     with_sequence: start=1 end={{user_count}}
 
   - include_role:
-      name: rhpam_ks_cors
+      name: rhpam_ks
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
+
+# Not needed when using the Trial-Ephemeral environment, as that already has CORS configured.
+#  - include_role:
+#      name: rhpam_ks_cors
+#    vars:
+#      OCP_PROJECT: 'rhpam-user{{item}}'
+#    with_sequence: start=1 end={{user_count}}
 
   - include_tasks: ./rhpam_decision-test-app.yml
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
-
-#  - name: migrate moduel 2 repos for all users
-#    uri:
-#      url: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}/api/v1/repos/migrate
-#      method: POST
-#      body: "{'clone_addr': '{{ gogs_clone_addr_m2 }}', 'uid': {{ item|int + 3 }}, 'repo_name': '{{ gogs_repo_name }}' }"
-#      body_format: json
-#      username: "user{{ item }}"
-#      url_username: "user{{ item }}"
-#      password: "{{ gogs_pwd }}"
-#      status_code: 200,201
-#      force_basic_auth: true
-#    ignore_errors: true
-#    with_sequence: start=0 end={{ infrasvcs_gogs_user_count }}
-#    when: infrasvcs_gogs_user_count > 0 and modules is search("m2")
-
-#- import_role:
-#    name: openshift_workshopper
-#    allow_duplicates: true
-#  vars:
-#    workshopper_name: guides-m3
-#    project_name: "{{ namespace }}"
-#    workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}"
-#    workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module3.yml"
-#    workshopper_env_vars:
-#      PROJECT_SUFFIX: "{{ project_suffix }}"
-#      #COOLSTORE_PROJECT: coolstore{{ project_suffix }}
-#      OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-#      #ECLIPSE_CHE_URL: http://che-{{ namespace }}.{{ apps_hostname_suffix }}
-#      #GIT_URL: http://gogs-{{ namespace }}.{{ apps_hostname_suffix }}
-#      NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
-#  when: modules is search("m3")
-#  tags: guides
-
-  # update jenkins templates
-  #- import_role:
-  #    name: openshift_jenkins
-  #  vars:
-  #    update_jenkins_templates: true
-  #    jenkins_template_disable_admin_monitors: true
-  #    deploy_jenkins: false
-  #    jenkins_max_cpu: 2
-  #    jenkins_max_mem: 2Gi
-
-  # Post RH-SSO configuration
-  #- name: Get access token to update RH-SSO theme
-  #  uri:
-  #    url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/realms/master/protocol/openid-connect/token
-  #    method: POST
-  #    body: "username=admin&password=password&grant_type=password&client_id=admin-cli"
-  #    status_code: 200, 201
-  #    force_basic_auth: true
-  #    validate_certs: no
-  #    return_content: yes
-  #    headers:
-  #      Content-Type: "application/x-www-form-urlencoded"
-  #  register: result_token
-
-#  - name: Update a master realm with RH-SSO theme
-#    uri:
-#      url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/admin/realms/master/
-#      method: PUT
-#      body_format: json
-#      body: '{ "displayName": "rh-sso", "displayNameHtml": "<strong>Red Hat</strong><sup>®</sup> Single Sign On", "loginTheme": "rh-sso", "adminTheme": "rh-sso", "accountTheme": "rh-sso", "emailTheme": "rh-sso", "accessTokenLifespan": 6000 }'
-#      status_code: 204
-#      force_basic_auth: true
-#      validate_certs: no
-#      headers:
-#        Content-Type: "application/json"
-#        Accept: "application/json"
-#        Authorization: "Bearer {{ result_token.json.access_token }}"
-#    when: result_token.json.access_token != ""
-
-#  - name: Create RH-SSO users as many as gogs users
-#    uri:
-#      url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/admin/realms/rhamt/users
-#      method: POST
-#      body_format: json
-#      body: '{ "username": "user{{ item }}", "enabled": true, "disableableCredentialTypes": [ "password" ] }'
-#      status_code: 200, 201, 409
-#      force_basic_auth: true
-#      validate_certs: no
-#      headers:
-#        Content-Type: "application/json"
-#        Accept: "application/json"
-#        Authorization: "Bearer {{ result_token.json.access_token }}"
-#    ignore_errors: true
-#    with_sequence: start=1 end={{ infrasvcs_gogs_user_count }}
-#    when: result_token.json.access_token != "" and infrasvcs_gogs_user_count > 0
-
-#  - name: Retrieve RH-SSO user's ID list
-#    uri:
-#      url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/admin/realms/rhamt/users
-#      method: GET
-#      status_code: 200, 201, 409
-#      force_basic_auth: true
-#      validate_certs: no
-#      return_content: yes
-#      headers:
-#        Accept: "application/json"
-#        Authorization: "Bearer {{ result_token.json.access_token }}"
-#    ignore_errors: true
-#    when: result_token.json.access_token != ""
-#    register: result_useridlist
-
-#  - name: Get access token to reset passwords
-#    uri:
-#      url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/realms/master/protocol/openid-connect/token
-#      method: POST
-#      body: "username=admin&password=password&grant_type=password&client_id=admin-cli"
-#      status_code: 200, 201
-#      force_basic_auth: true
-#      validate_certs: no
-#      return_content: yes
-#      headers:
-#        Content-Type: "application/x-www-form-urlencoded"
-#    register: result_token
-
-#  - name: Reset passwords for each RH-SSO user like userxx
-#    uri:
-#      url: https://secure-rhamt-web-console-{{ namespace }}.{{ apps_hostname_suffix }}/auth/admin/realms/rhamt/users/{{ item.id }}/reset-password
-#      method: PUT
-#      body_format: json
-#      body: '{ "type": "password", "value": "{{ gogs_pwd }}", "temporary": true}'
-#      status_code: 204
-#      force_basic_auth: true
-#      validate_certs: no
-#      headers:
-#        Content-Type: "application/json"
-#        Accept: "application/json"
-#        Authorization: "Bearer {{ result_token.json.access_token }}"
-#    ignore_errors: true
-#    with_items: "{{ result_useridlist.json }}"
-#    when: item.username != "rhamt"
-
-  # deploy eclipse che
-#  - import_role:
-#      name: openshift_eclipse_che
-#    vars:
-#      project_name: "{{ namespace }}"
-#      che_version: "6.8.0"
-#      multi_user: true
-#      route_suffix: "{{ apps_hostname_suffix }}"
-#      keycloak_admin_user: "{{ infrasvcs_adm_user }}"
-#      keycloak_admin_pwd: "{{ infrasvcs_adm_pwd }}"
-#      install_java_oc_stack: false
-#      install_custom_stacks_json: |
-#        [{
-#          "name": "Java Cloud-Native",
-#          "description": "Java JDK Stack on CentOS for Cloud-Native Workshop",
-#          "scope": "general",
-#          "workspaceConfig": {
-#            "environments": {
-#              "default": {
-#                "recipe": {
-#                  "type": "dockerimage",
-#                  "content": "siamaksade/che-centos-jdk8"
-#                },
-#                "machines": {
-#                  "dev-machine": {
-#                    "env": {
-#                      "MAVEN_OPTS" : "-Xmx512m",
-#                      "MAVEN_MIRROR_URL": "http://nexus:8081/repository/maven-all-public"
-#                    },
-#                    "servers": {
-#                      "8080/tcp": {
-#                        "attributes": {},
-#                        "protocol": "http",
-#                        "port": "8080"
-#                      },
-#                      "8000/tcp": {
-#                        "attributes": {},
-#                        "protocol": "http",
-#                        "port": "8000"
-#                      },
-#                      "9000/tcp": {
-#                        "attributes": {},
-#                        "protocol": "http",
-#                        "port": "9000"
-#                      },
-#                      "9001/tcp": {
-#                        "attributes": {},
-#                        "protocol": "http",
-#                        "port": "9001"
-#                      }
-#                    },
-#                    "volumes": {},
-#                    "installers": [
-#                      "org.eclipse.che.exec",
-#                      "org.eclipse.che.terminal",
-#                      "org.eclipse.che.ws-agent"
-#                    ],
-#                    "attributes": {
-#                      "memoryLimitBytes": "2147483648"
-#                    }
-#                  }
-#                }
-#              }
-#            },
-#            "commands": [
-#              {
-#                "commandLine": "mvn package -f ${current.project.path}",
-#                "name": "build",
-#                "type": "mvn",
-#                "attributes": {
-#                  "goal": "Build",
-#                  "previewUrl": ""
-#                }
-#              },
-#              {
-#                "commandLine": "mvn clean package -f ${current.project.path}",
-#                "name": "clean build",
-#                "type": "mvn",
-#                "attributes": {
-#                  "goal": "Build",
-#                  "previewUrl": ""
-#                }
-#              },
-#              {
-#                "commandLine": "mvn verify -f ${current.project.path}",
-#                "name": "test",
-#                "type": "mvn",
-#                "attributes": {
-#                  "goal": "Test",
-#                  "previewUrl": ""
-#                }
-#              },
-#              {
-#                "commandLine": "mvn spring-boot:run -f ${current.project.path}",
-#                "name": "run spring-boot",
-#                "type": "mvn",
-#                "attributes": {
-#                  "goal": "Run",
-#                  "previewUrl": "${server.9000/tcp}"
-#                }
-#              },
-#              {
-#                "commandLine": "cd ${current.project.path} && mvn fabric8:deploy",
-#                "name": "fabric8:deploy",
-#                "type": "mvn",
-#                "attributes": {
-#                  "goal": "Deploy",
-#                  "previewUrl": ""
-#                }
-#              }
-#            ],
-#            "projects": [],
-#            "defaultEnv": "default",
-#            "name": "default",
-#            "links": []
-#          },
-#          "components": [
-#            {
-#              "version": "---",
-#              "name": "CentOS"
-#            },
-#            {
-#              "version": "1.8.0_45",
-#              "name": "JDK"
-#            },
-#            {
-#              "version": "3.2.2",
-#              "name": "Maven"
-#            },
-#            {
-#              "version": "2.4",
-#              "name": "Ansible"
-#            },
-#            {
-#              "version": "3.11",
-#              "name": "OpenShift CLI"
-#            }
-#          ],
-#          "creator": "ide",
-#          "tags": [
-#            "Java",
-#            "JDK",
-#            "Maven",
-#            "CentOS",
-#            "Git"
-#          ],
-#          "id": "java-oc-centos-cloudnative"
-#        }]
-#    tags: eclipse-che
-#
