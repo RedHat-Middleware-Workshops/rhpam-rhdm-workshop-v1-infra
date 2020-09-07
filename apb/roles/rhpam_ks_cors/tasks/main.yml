@@ -7,11 +7,11 @@
   changed_when: false
 
 - name: Create ImageStream
-  shell: "oc create -f {{ role_path }}/files/rhpam77-ks-cors-image-streams.yml -n {{ OCP_PROJECT }}"
+  shell: "oc create -f {{ role_path }}/files/rhpam78-ks-cors-image-streams.yml -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
 - name: "Configure KIE-Server ImageStream"
-  shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam-kieserver-rhel8-cors:7.7.1\"}]' -n {{ OCP_PROJECT }}"
+  shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/name\", \"value\": \"rhpam-kieserver-rhel8-cors:7.8.0\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
 
 - name: "Configure KIE-Server ImageStream Namespace"

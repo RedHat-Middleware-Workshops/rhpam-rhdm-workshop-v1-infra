@@ -59,7 +59,7 @@ BEGIN
         remark := 'N/a';
     END CASE;
 
-    INSERT INTO customer_satisfaction (customerid, caseid, satisfactionscore, remark, phonenumber)
+    INSERT INTO public.customer_satisfaction (customerid, caseid, satisfactionscore, remark, phonenumber)
       VALUES (customer_id, case_id, satisfaction_score, remark, phone_number);
   END LOOP;
 END;$$ LANGUAGE plpgsql;
@@ -135,11 +135,11 @@ BEGIN
 
     activation_time := created_on + interval '4 hour';
 
-    INSERT INTO task (processid, name, createdon, deploymentid, description, duedate, status, lastmodificationdate, createdby, actualowner, activationtime)
+    INSERT INTO public.task (processid, name, createdon, deploymentid, description, duedate, status, lastmodificationdate, createdby, actualowner, activationtime)
       VALUES (process_id, name, created_on, deployment_id, description, due_date, status, last_modification_date, created_by, actual_owner, activation_time);
   END LOOP;
 END;$$ LANGUAGE plpgsql;
 
-DELETE FROM task;
+DELETE FROM public.task;
 
 SELECT generate_task_mocks(15000);

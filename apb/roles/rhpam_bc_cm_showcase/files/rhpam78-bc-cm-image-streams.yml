@@ -1,0 +1,29 @@
+kind: ImageStreamList
+apiVersion: v1
+metadata:
+  name: rhpam78-bc-cm-image-streams
+  annotations:
+    description: ImageStream definitions for Red Hat Process Automation Manager 7.8 with Case Management Showcase
+    openshift.io/provider-display-name: Red Hat, Inc.
+items:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: rhpam-businesscentral-rhel8-cm-showcase
+    annotations:
+      openshift.io/display-name: Red Hat Process Automation Manager Business Central 7.8 with Case Management Showcase
+      openshift.io/provider-display-name: Red Hat, Inc.
+  spec:
+    tags:
+    - name: '7.8.0'
+      annotations:
+        description: Red Hat Process Automation Manager 7.8 - Business Central with Case Management Showcase image.
+        iconClass: icon-jboss
+        tags: rhpam
+        supports: rhpam:7.8
+        version: '7.8.0'
+      referencePolicy:
+        type: Local
+      from:
+        kind: DockerImage
+        name: quay.io/rhpam_rhdm/rhpam-businesscentral-rhel8-cm-showcase:7.8.0
