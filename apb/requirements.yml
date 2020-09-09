@@ -10,7 +10,7 @@
   version: 1.2.0
   name: openshift_workshopper
 
-- src: duncandoyle.ansible_openshift_rhpam
+- src: kmacedovarela.ansible_openshift_rhpam
   version: 0.0.6
   name: ansible_openshift_rhpam
 
