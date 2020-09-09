@@ -390,6 +390,7 @@
       OCP_PROJECT: 'rhpam-user{{item}}'
       RHPAM_VERSION_TAG: 7.8.x
       RHPAM_VERSION_ID: 78
+      RHPAM_ENVIRONMENT: authoring
     with_sequence: start=1 end={{user_count}}
 
   - include_role:
