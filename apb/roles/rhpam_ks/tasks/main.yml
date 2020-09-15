@@ -9,5 +9,5 @@
 - name: Set KIE_SERVER Password
   shell: "oc set env dc/rhpam7-kieserver KIE_SERVER_PWD=test1234! -n {{ OCP_PROJECT }}"
 
-- name: Set RHPAMCENTR_MAVEN_REPO_PASSWORD Password
-  shell: "oc set env dc/rhpam7-kieserver RHPAMCENTR_MAVEN_REPO_PASSWORD=test1234! -n {{ OCP_PROJECT }}"
+# - name: Set RHPAMCENTR_MAVEN_REPO_PASSWORD Password
+#   shell: "oc set env dc/rhpam7-kieserver RHPAMCENTR_MAVEN_REPO_PASSWORD=test1234! -n {{ OCP_PROJECT }}"
