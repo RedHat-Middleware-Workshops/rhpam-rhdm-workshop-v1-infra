@@ -243,7 +243,7 @@
     vars:
       workshopper_name: guides-m1
       project_name: "{{ namespace }}"
-      #workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-{{ module_version }}m1-guides/{{ github_ref }}"
+      workshopper_content_url_prefix: "https://raw.githubusercontent.com/kmacedovarela/rhpam-rhdm-workshop-{{ module_version }}m1-guides/{{ github_ref }}"
       workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-{{ module_version }}m1-guides/{{ github_ref }}/_workshop.yml"      
     workshopper_env_vars:
         PROJECT_SUFFIX: "{{ project_suffix }}"
