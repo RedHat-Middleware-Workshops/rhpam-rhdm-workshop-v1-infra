@@ -261,7 +261,7 @@
 #    with_sequence: start=1 end={{user_count}}
 
 # Comment this if using Trial-Ephemeral environment, as that already has CORS configured.
- - include_role:
+  - include_role:
       name: rhpam_ks_cors
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
