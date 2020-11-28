@@ -1,5 +1,4 @@
 ---
-
 - name: Check if ReactJS Decision Client App exists
   shell: "oc get dc/react-web-app -n {{OCP_PROJECT}}"
   register: reactjs_result
