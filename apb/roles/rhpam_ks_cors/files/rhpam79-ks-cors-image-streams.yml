@@ -1,9 +1,9 @@
 kind: ImageStreamList
 apiVersion: v1
 metadata:
-  name: rhpam78-ks-cors-image-streams
+  name: rhpam79-ks-cors-image-streams
   annotations:
-    description: ImageStream definitions for Red Hat Process Automation Manager 7.8 KIE-Server with CORS
+    description: ImageStream definitions for Red Hat Process Automation Manager 7.9 KIE-Server with CORS
     openshift.io/provider-display-name: Red Hat, Inc.
 items:
 - kind: ImageStream
@@ -11,17 +11,17 @@ items:
   metadata:
     name: rhpam-kieserver-rhel8-cors
     annotations:
-      openshift.io/display-name: Red Hat Process Automation Manager KIE-Server 7.8 with CORS
+      openshift.io/display-name: Red Hat Process Automation Manager KIE-Server 7.9 with CORS
       openshift.io/provider-display-name: Red Hat, Inc.
   spec:
     tags:
-    - name: '7.8.0'
+    - name: '7.9.0'
       annotations:
-        description: Red Hat Process Automation Manager 7.8 - KIE-Server with CORS image.
+        description: Red Hat Process Automation Manager 7.9 - KIE-Server with CORS image.
         iconClass: icon-jboss
         tags: rhpam
-        supports: rhpam:7.8
-        version: '7.8.0'
+        supports: rhpam:7.9
+        version: '7.9.0'
       referencePolicy:
         type: Local
       from:
