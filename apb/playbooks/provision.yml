@@ -77,6 +77,9 @@
             metadata:
               name: dummy
               namespace: labs-infra
+      - name: Wait for Service to be deleted
+        pause:
+          seconds: 4
       - name: Delete an OpenShift Route
         openshift_raw:
           state: absent
@@ -177,31 +180,31 @@
     tags: rhpam
 
   - name: Import the RHPAM ImageStreams into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.8.0.GA/rhpam78-image-streams.yaml  -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/rhpam79-image-streams.yaml  -n openshift"
     when: rhpam_is_exists_result is failed
     ignore_errors: true
     tags: rhpam
 
   - name: Check if RHPAM Authoring Template exists
-    shell: oc get template/rhpam78-authoring -n openshift
+    shell: oc get template/rhpam79-authoring -n openshift
     register: rhpam_template_authoring_exists_result
     ignore_errors: true
     tags: rhpam
 
   - name: Import the RHPAM Authoring Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.8.0.GA/templates/rhpam78-authoring.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/templates/rhpam79-authoring.yaml -n openshift"
     when: rhpam_template_authoring_exists_result is failed
     ignore_errors: true
     tags: rhpam
 
   - name: Check if RHPAM Trial Template exists
-    shell: oc get template/rhpam78-trial-ephemeral -n openshift
+    shell: oc get template/rhpam79-trial-ephemeral -n openshift
     register: rhpam_template_trial_exists_result
     ignore_errors: true
     tags: rhpam
 
   - name: Import the RHPAM Trial Ephemeral Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.8.0.GA/templates/rhpam78-trial-ephemeral.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/templates/rhpam79-trial-ephemeral.yaml -n openshift"
     when: rhpam_template_trial_exists_result is failed
     ignore_errors: true
     tags: rhpam
@@ -236,8 +239,8 @@
       name: ansible_openshift_rhpam
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
-      RHPAM_VERSION_TAG: 7.8.x
-      RHPAM_VERSION_ID: 78
+      RHPAM_VERSION_TAG: 7.9.x
+      RHPAM_VERSION_ID: 79
       RHPAM_ENVIRONMENT: authoring
     with_sequence: start=1 end={{user_count}}
 

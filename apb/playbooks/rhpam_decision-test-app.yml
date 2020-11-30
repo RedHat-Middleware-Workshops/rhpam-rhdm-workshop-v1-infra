@@ -16,5 +16,5 @@
   when: reactjs_result is failed
 
 - name: Create ReactJS Decision Client App
-  shell: "oc new-app -e KIE_SERVER_URL=http://{{kie_server_route}} -e KIE_SERVER_USER=pamAdmin -e KIE_SERVER_PWD=redhatpam1! --template react-web-app -p SOURCE_REPOSITORY_URL=https://github.com/DuncanDoyle/rhpam7-workshop-reactjs-rules-client -n {{OCP_PROJECT}}"
+  shell: "oc new-app -e KIE_SERVER_URL=http://{{kie_server_route}} -e KIE_SERVER_USER=pamAdmin -e KIE_SERVER_PWD=redhatpam1! --template react-web-app -p SOURCE_REPOSITORY_URL=https://github.com/jbossdemocentral/rhpam7-workshop-reactjs-rules-client -n {{OCP_PROJECT}}"
   when: reactjs_result is failed
