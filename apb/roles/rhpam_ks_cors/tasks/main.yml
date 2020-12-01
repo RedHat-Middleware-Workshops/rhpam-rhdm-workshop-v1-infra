@@ -17,3 +17,9 @@
 - name: "Configure KIE-Server ImageStream Namespace"
   shell: "oc patch dc/rhpam7-kieserver --type='json' -p '[{\"op\": \"replace\", \"path\": \"/spec/triggers/0/imageChangeParams/from/namespace\", \"value\": \"{{OCP_PROJECT}}\"}]' -n {{ OCP_PROJECT }}"
   when: is_result is failed
+
+- name: "Configure KIE-Server Property for REST Calls"
+  shell: "oc set env dc/rhpam7-kieserver DROOLS_SERVER_FILTER_CLASSES=false -n {{ OCP_PROJECT }}"
+  when: is_result is failed
+
+  
