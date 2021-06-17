@@ -98,63 +98,64 @@
   #####################
   ### Import Guides ###
   #####################
-  - import_role:
-      name: openshift_workshopper
-      allow_duplicates: true
-    vars:
-      workshopper_name: guides-m1
-      project_name: "{{ namespace }}"
-      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}"
-      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module1.yml"
-      workshopper_env_vars:
-        PROJECT_SUFFIX: "{{ project_suffix }}"
-        OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-        NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
-    when: modules is search("m1")
-    tags: guides
+  ## No guides should be imported at a first moment with this playbook
+  # - import_role:
+  #     name: openshift_workshopper
+  #     allow_duplicates: true
+  #   vars:
+  #     workshopper_name: guides-m1
+  #     project_name: "{{ namespace }}"
+  #     workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}"
+  #     workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m1-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module1.yml"
+  #     workshopper_env_vars:
+  #       PROJECT_SUFFIX: "{{ project_suffix }}"
+  #       OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
+  #       NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
+  #   when: modules is search("m1")
+  #   tags: guides
 
-  - import_role:
-      name: openshift_workshopper
-      allow_duplicates: true
-    vars:
-      workshopper_name: guides-m2
-      project_name: "{{ namespace }}"
-      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}"
-      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module2.yml"
-      workshopper_env_vars:
-        PROJECT_SUFFIX: "{{ project_suffix }}"
-        OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-        NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
-    when: modules is search("m2")
-    tags: guides
+  # - import_role:
+  #     name: openshift_workshopper
+  #     allow_duplicates: true
+  #   vars:
+  #     workshopper_name: guides-m2
+  #     project_name: "{{ namespace }}"
+  #     workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}"
+  #     workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m2-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module2.yml"
+  #     workshopper_env_vars:
+  #       PROJECT_SUFFIX: "{{ project_suffix }}"
+  #       OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
+  #       NEXUS_URL: http://nexus-{{ namespace }}.{{ apps_hostname_suffix }}
+  #   when: modules is search("m2")
+  #   tags: guides
 
-  - import_role:
-      name: openshift_workshopper
-      allow_duplicates: true
-    vars:
-      workshopper_name: guides-m3
-      project_name: "{{ namespace }}"
-      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}"
-      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module3.yml"
-      workshopper_env_vars:
-        PROJECT_SUFFIX: "{{ project_suffix }}"
-        OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-    when: modules is search("m3")
-    tags: guides
+  # - import_role:
+  #     name: openshift_workshopper
+  #     allow_duplicates: true
+  #   vars:
+  #     workshopper_name: guides-m3
+  #     project_name: "{{ namespace }}"
+  #     workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}"
+  #     workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m3-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module3.yml"
+  #     workshopper_env_vars:
+  #       PROJECT_SUFFIX: "{{ project_suffix }}"
+  #       OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
+  #   when: modules is search("m3")
+  #   tags: guides
 
-  - import_role:
-      name: openshift_workshopper
-      allow_duplicates: true
-    vars:
-      workshopper_name: guides-m4
-      project_name: "{{ namespace }}"
-      workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m4-guides/{{ github_ref }}"
-      workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m4-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module4.yml"
-      workshopper_env_vars:
-        PROJECT_SUFFIX: "{{ project_suffix }}"
-        OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
-    when: modules is search("m4")
-    tags: guides
+  # - import_role:
+  #     name: openshift_workshopper
+  #     allow_duplicates: true
+  #   vars:
+  #     workshopper_name: guides-m4
+  #     project_name: "{{ namespace }}"
+  #     workshopper_content_url_prefix: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m4-guides/{{ github_ref }}"
+  #     workshopper_workshop_urls: "https://raw.githubusercontent.com/{{ github_account }}/rhpam-rhdm-workshop-v1m4-guides/{{ github_ref }}/_rhpam-rhdm-workshop-module4.yml"
+  #     workshopper_env_vars:
+  #       PROJECT_SUFFIX: "{{ project_suffix }}"
+  #       OPENSHIFT_CONSOLE_URL: "{{ openshift_master_url }}"
+  #   when: modules is search("m4")
+  #   tags: guides
 
 ### Install Java ###
 
@@ -165,8 +166,8 @@
     ignore_errors: true
     tags: jdk
 
-  - name: install java image stream
-    shell: "oc apply -n openshift -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/openjdk/openjdk18-image-stream.json"
+  - name: install java image streams
+    shell: "oc apply -n openshift -f https://raw.githubusercontent.com/jboss-container-images/openjdk/develop/templates/image-streams.json"
     when: java_imagestream_result is failed
     tags: jdk
 
@@ -180,7 +181,7 @@
     tags: rhpam
 
   - name: Import the RHPAM ImageStreams into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/rhpam79-image-streams.yaml  -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.11.x/rhpam711-image-streams.yaml  -n openshift"
     when: rhpam_is_exists_result is failed
     ignore_errors: true
     tags: rhpam
@@ -192,7 +193,7 @@
     tags: rhpam
 
   - name: Import the RHPAM Authoring Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/templates/rhpam79-authoring.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.11.x/templates/rhpam711-authoring.yaml -n openshift"
     when: rhpam_template_authoring_exists_result is failed
     ignore_errors: true
     tags: rhpam
@@ -204,16 +205,15 @@
     tags: rhpam
 
   - name: Import the RHPAM Trial Ephemeral Template into the cluster.
-    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.9.0.GA/templates/rhpam79-trial-ephemeral.yaml -n openshift"
+    shell: "oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.11.x/templates/rhpam711-trial-ephemeral.yaml -n openshift"
     when: rhpam_template_trial_exists_result is failed
     ignore_errors: true
     tags: rhpam
 
-  - name: Import Create React App template
-    shell: "oc create -f https://raw.githubusercontent.com/DuncanDoyle/reactjs-openshift/master/create-react-app-openshift-template.yaml -n openshift"
-    ignore_errors: true
-    tags: rhpam
-
+  # - name: Import Create React App template
+  #   shell: "oc create -f https://raw.githubusercontent.com/DuncanDoyle/reactjs-openshift/master/create-react-app-openshift-template.yaml -n openshift"
+  #   ignore_errors: true
+  #   tags: rhpam
 
 # Create database for reporting module
   - include_role:
@@ -239,8 +239,8 @@
       name: ansible_openshift_rhpam
     vars:
       OCP_PROJECT: 'rhpam-user{{item}}'
-      RHPAM_VERSION_TAG: 7.9.x
-      RHPAM_VERSION_ID: 79
+      RHPAM_VERSION_TAG: 7.11.x
+      RHPAM_VERSION_ID: 711
       RHPAM_ENVIRONMENT: authoring
     with_sequence: start=1 end={{user_count}}
 
@@ -250,27 +250,27 @@
       OCP_PROJECT: 'rhpam-user{{item}}'
     with_sequence: start=1 end={{user_count}}
 
-  - include_role:
-      name: rhpam_bc_cm_showcase
-    vars:
-      OCP_PROJECT: 'rhpam-user{{item}}'
-    with_sequence: start=1 end={{user_count}}
+  # - include_role:
+  #     name: rhpam_bc_cm_showcase
+  #   vars:
+  #     OCP_PROJECT: 'rhpam-user{{item}}'
+  #   with_sequence: start=1 end={{user_count}}
 
 # Uncomment this in case using Trial-Ephemeral environment, as that already has CORS configured.
-#  - include_role:
-#      name: rhpam_ks
-#    vars:
-#      OCP_PROJECT: 'rhpam-user{{item}}'
-#    with_sequence: start=1 end={{user_count}}
+ - include_role:
+     name: rhpam_ks
+   vars:
+     OCP_PROJECT: 'rhpam-user{{item}}'
+   with_sequence: start=1 end={{user_count}}
 
 # Comment this if using Trial-Ephemeral environment, as that already has CORS configured.
-  - include_role:
-      name: rhpam_ks_cors
-    vars:
-      OCP_PROJECT: 'rhpam-user{{item}}'
-    with_sequence: start=1 end={{user_count}}
+  # - include_role:
+  #     name: rhpam_ks_cors
+  #   vars:
+  #     OCP_PROJECT: 'rhpam-user{{item}}'
+  #   with_sequence: start=1 end={{user_count}}
 
-  - include_tasks: ./rhpam_decision-test-app.yml
-    vars:
-      OCP_PROJECT: 'rhpam-user{{item}}'
-    with_sequence: start=1 end={{user_count}}
+  # - include_tasks: ./rhpam_decision-test-app.yml
+  #   vars:
+  #     OCP_PROJECT: 'rhpam-user{{item}}'
+  #   with_sequence: start=1 end={{user_count}}
