@@ -11,7 +11,7 @@
   name: openshift_workshopper
 
 - src: kmacedovarela.ansible_openshift_rhpam
-  version: 0.0.8
+  version: 0.0.9
   name: ansible_openshift_rhpam
 
 #- src: siamaksade.openshift_eclipse_che
